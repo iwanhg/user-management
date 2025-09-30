@@ -116,16 +116,33 @@ This UI allows you to explore and test all available API endpoints.
 
 2.  **Receive JWT**: The response will contain a JWT access token.
 
+     ```json
+     {
+       "token": "eyJhbGciOiJIUzI1NiJ9...",
+       "authType": "Bearer",
+       "expiresIn": 3600000,
+       "refreshToken": "a-very-long-refresh-token-string..."
+     }
+     ```
+
+3.  **(Optional) Refresh Token**: When the access token (`token`) expires, send a `POST` request to `/api/auth/refresh` with your `refreshToken` to get a new access token without needing to sign in again.
+
     ```json
     {
-      "token": "eyJhbGciOiJIUzI1NiJ9...",
-      "authType": "Bearer",
-      "expiresIn": 3600000
+      "refreshToken": "a-very-long-refresh-token-string..."
     }
     ```
 
-3.  **Access Secured Endpoints**: To access protected endpoints (e.g., `GET /api/users`), include the token in the `Authorization` header.
+4.  **Access Secured Endpoints**: To access protected endpoints (e.g., `GET /api/users`), include the access token in the `Authorization` header.
 
     `Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...`
 
     You can do this easily in the Swagger UI by clicking the "Authorize" button and pasting your token.
+
+5.  **Logout**: To securely log out, send a `POST` request to `/api/auth/logout` with your `refreshToken`. This will invalidate the token on the server.
+
+    ```json
+    {
+      "refreshToken": "a-very-long-refresh-token-string..."
+    }
+    ```

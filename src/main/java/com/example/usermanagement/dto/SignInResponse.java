@@ -11,5 +11,8 @@ public record SignInResponse(
         String authType,
 
         @Schema(description = "The duration of the token's validity in milliseconds", example = "3600000")
-        long expiresIn
+        long expiresIn,
+
+        @Schema(description = "The refresh token to be used to obtain a new access token")
+        String refreshToken
 ) {}
