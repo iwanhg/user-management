@@ -3,7 +3,6 @@ package com.example.usermanagement.service;
 import com.example.usermanagement.dto.CreateUserRequest;
 import com.example.usermanagement.dto.UpdateUserRequest;
 import com.example.usermanagement.dto.UserDto;
-import com.example.usermanagement.entity.Role;
 import com.example.usermanagement.entity.User;
 import com.example.usermanagement.exception.UserNotFoundException;
 import com.example.usermanagement.repository.UserRepository;
@@ -25,7 +24,7 @@ public class UserService {
     @Transactional
     public UserDto createUser(CreateUserRequest request) {
         String hashedPassword = passwordEncoder.encode(request.password());
-        User newUser = new User(request.username(), hashedPassword, Role.USER); // Assign USER role by default
+        User newUser = new User(request.username(), hashedPassword, "USER"); // Assign USER role by default
         User savedUser = userRepository.save(newUser);
         return convertToDto(savedUser);
     }

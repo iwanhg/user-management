@@ -1,4 +1,5 @@
 HELP.md
+application.properties
 # Ignore all content in the logs directory...
 logs/*
 # ...but not the .gitkeep file, which ensures the directory is tracked.

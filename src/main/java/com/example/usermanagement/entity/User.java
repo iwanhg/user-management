@@ -31,9 +31,8 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role;
+    private String role;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -49,15 +48,15 @@ public class User implements UserDetails {
     @Column(name = "refresh_token_expiry")
     private Instant refreshTokenExpiry;
 
-    public User(String username, String password, Role role) {
+    public User(String username, String password, String user) {
         this.username = username;
         this.password = password;
-        this.role = role;
+        this.role = user;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role));
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.example.usermanagement.config;
 
-import com.example.usermanagement.entity.Role;
 import com.example.usermanagement.entity.User;
 import com.example.usermanagement.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +31,7 @@ public class DataInitializer implements ApplicationRunner {
             User adminUser = new User(
                     adminUsername,
                     passwordEncoder.encode(adminPassword),
-                    Role.ADMIN);
+                    "ADMIN");
             userRepository.save(adminUser);
             log.info("Default ADMIN user created successfully with username '{}'", adminUsername);
         }

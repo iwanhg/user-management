@@ -48,7 +48,9 @@ public class AuthService {
                 .orElseThrow(() -> new TokenRefreshException("Refresh token not found."));
 
         if (user.getRefreshTokenExpiry().isBefore(Instant.now())) {
-            userRepository.save(user); // Persist the null token
+            user.setRefreshToken(null);
+            user.setRefreshTokenExpiry(null);
+            userRepository.save(user); // Persist the cleared token
             throw new TokenRefreshException("Refresh token has expired. Please sign in again.");
         }
 
