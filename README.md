@@ -147,3 +147,16 @@ This UI allows you to explore and test all available API endpoints.
       "refreshToken": "a-very-long-refresh-token-string..."
     }
     ```
+
+## Testing
+
+This project includes a comprehensive suite of unit and integration tests. You can run all tests using the Maven wrapper:
+
+-   On macOS/Linux:
+    ```bash
+    ./mvnw test
+    ```
+-   On Windows:
+    ```bash
+    mvnw.cmd test
+    ```
