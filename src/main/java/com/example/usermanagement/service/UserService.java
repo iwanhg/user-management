@@ -3,14 +3,17 @@ package com.example.usermanagement.service;
 import com.example.usermanagement.dto.CreateUserRequest;
 import com.example.usermanagement.dto.UpdateUserRequest;
 import com.example.usermanagement.dto.UserDto;
+import com.example.usermanagement.entity.Role;
 import com.example.usermanagement.entity.User;
 import com.example.usermanagement.exception.UserNotFoundException;
+import com.example.usermanagement.repository.RoleRepository;
 import com.example.usermanagement.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Set;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,11 +23,17 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
 
     @Transactional
     public UserDto createUser(CreateUserRequest request) {
         String hashedPassword = passwordEncoder.encode(request.password());
-        User newUser = new User(request.username(), hashedPassword, "USER"); // Assign USER role by default
+        User newUser = new User(request.username(), hashedPassword);
+
+        Role userRole = roleRepository.findByName("ROLE_USER")
+                .orElseThrow(() -> new RuntimeException("Error: ROLE_USER is not found."));
+        newUser.setRoles(Set.of(userRole));
+
         User savedUser = userRepository.save(newUser);
         return convertToDto(savedUser);
     }
