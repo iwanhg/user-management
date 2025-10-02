@@ -88,3 +88,6 @@ flyway-repair-*.sql
 # Prevent accidental commits of DB dumps
 *.sql.gz
 *.dump
+
+# Local GitHub copilot instructions (developer-only)
+.github/copilot-instructions.md
