@@ -35,8 +35,12 @@ public class AuthService {
         String refreshToken = jwtService.generateRefreshToken(user);
         long expiresIn = jwtService.getJwtExpiration();
 
-        user.setRefreshToken(refreshToken);
+        // Compute and persist only the hash of the refresh token
+        String refreshHash = jwtService.computeRefreshTokenHash(refreshToken);
+        user.setRefreshTokenHash(refreshHash);
         user.setRefreshTokenExpiry(Instant.now().plusMillis(jwtService.getRefreshExpiration()));
+        // Optionally keep plaintext during rollout; consider removing in a later migration
+        user.setRefreshToken(null);
         userRepository.save(user);
 
         return new SignInResponse(accessToken, "Bearer", expiresIn, refreshToken);
@@ -44,8 +48,10 @@ public class AuthService {
 
     @Transactional
     public SignInResponse refreshToken(RefreshTokenRequest request) {
-        User user = userRepository.findByRefreshToken(request.refreshToken())
-                .orElseThrow(() -> new TokenRefreshException("Refresh token not found."));
+    String incoming = request.refreshToken();
+    String incomingHash = jwtService.computeRefreshTokenHash(incoming);
+    User user = userRepository.findByRefreshTokenHash(incomingHash)
+        .orElseThrow(() -> new TokenRefreshException("Refresh token not found."));
 
         if (user.getRefreshTokenExpiry().isBefore(Instant.now())) {
             user.setRefreshToken(null);
@@ -59,7 +65,8 @@ public class AuthService {
         String newRefreshToken = jwtService.generateRefreshToken(user);
 
         // Update the user's refresh token details in the database
-        user.setRefreshToken(newRefreshToken);
+        String newRefreshHash = jwtService.computeRefreshTokenHash(newRefreshToken);
+        user.setRefreshTokenHash(newRefreshHash);
         user.setRefreshTokenExpiry(Instant.now().plusMillis(jwtService.getRefreshExpiration()));
         userRepository.save(user);
 
@@ -68,11 +75,12 @@ public class AuthService {
 
     @Transactional
     public void logout(RefreshTokenRequest request) {
-        User user = userRepository.findByRefreshToken(request.refreshToken())
-                .orElseThrow(() -> new UserNotFoundException("Refresh token not found."));
+    String incomingHash = jwtService.computeRefreshTokenHash(request.refreshToken());
+    User user = userRepository.findByRefreshTokenHash(incomingHash)
+        .orElseThrow(() -> new UserNotFoundException("Refresh token not found."));
 
-        user.setRefreshToken(null);
-        user.setRefreshTokenExpiry(null);
-        userRepository.save(user);
+    user.setRefreshTokenHash(null);
+    user.setRefreshTokenExpiry(null);
+    userRepository.save(user);
     }
 }

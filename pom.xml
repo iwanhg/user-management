@@ -141,11 +141,6 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>10.12.0</version> <!-- Or the latest version -->
                 <configuration>
-                    <!-- 
-                      IMPORTANT: It's not recommended to hardcode credentials in your pom.xml.
-                      This is shown for demonstration. In a real project, use Maven profiles 
-                      or pass these as command-line arguments.
-                    -->
                     <url>${spring.datasource.url}</url>
                     <user>${spring.datasource.username}</user>
                     <password>${spring.datasource.password}</password>

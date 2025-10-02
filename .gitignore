@@ -38,3 +38,53 @@ build/
 .vscode/
 
 *.jar
+
+# OS files
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Logs: keep existing rule but also ignore rotated/archived logs
+# logs/ is already ignored except logs/.gitkeep; ensure archived is ignored too
+logs/archived/
+
+# Temporary files
+*.tmp
+*~
+
+# Build artifacts
+*.class
+*.war
+*.ear
+
+# Generated sources
+/generated-sources/
+/generated-test-sources/
+
+# Maven wrapper & local
+/.mvn/wrapper/maven-wrapper.properties
+
+# Local configuration (do NOT commit secrets)
+application-local.properties
+.env
+
+# Test reports / coverage
+/target/surefire-reports/
+/target/jacoco/
+coverage/
+
+# Ignore IDE-specific run configs
+*.run.xml
+
+# Ignore temporary test dump files
+*.dumpstream
+
+# Flyway repair or local scripts (do not ignore migration SQLs under src/main/resources/db/migration)
+flyway-repair-*.sql
+
+# Tool compiled classes (if FlywayDbRepairTool is compiled locally)
+/src/main/java/com/example/usermanagement/tools/*.class
+
+# Prevent accidental commits of DB dumps
+*.sql.gz
+*.dump

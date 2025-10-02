@@ -48,6 +48,12 @@ public class User implements UserDetails {
     @Column(name = "refresh_token_expiry")
     private Instant refreshTokenExpiry;
 
+    // New column: store only the hash of the refresh token (HMAC-SHA256 or SHA-256)
+    // We keep the old `refreshToken` column for compatibility during rollout but
+    // the application will read/write `refreshTokenHash` after migration V10.
+    @Column(name = "refresh_token_hash")
+    private String refreshTokenHash;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),

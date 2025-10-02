@@ -44,7 +44,6 @@ cd user-management-service
 ### 3. Configure Application Properties
 
 1.  Copy the `application.properties.sample.properties.sample.properties` file to `src/main/resources/application.properties` file.
-1.  Open the `src/main/resources/application.properties` file.
 2.  Update the datasource properties with your MySQL username and password.
 
     ```properties
@@ -53,6 +52,7 @@ cd user-management-service
     ```
 
 3.  IMPORTANT! Change the default administrator credentials that are created on the first run.
+3.  (Optional) You can also change the default administrator credentials that are created on the first run.
 
     ```properties
     app.default-admin.username=admin
